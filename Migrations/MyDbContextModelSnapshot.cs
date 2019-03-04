@@ -44,9 +44,14 @@ namespace EFModels.Migrations
 
                     b.Property<float>("price");
 
+                    b.Property<string>("type")
+                        .IsRequired();
+
                     b.HasKey("Isbn");
 
                     b.ToTable("Book");
+
+                    b.HasDiscriminator<string>("type").HasValue("book");
                 });
 
             modelBuilder.Entity("EFModels.Models.BookAuthors", b =>
@@ -69,25 +74,6 @@ namespace EFModels.Migrations
                     b.ToTable("BookAuthors");
                 });
 
-            modelBuilder.Entity("EFModels.Models.PriceOffer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("BookIsbn");
-
-                    b.Property<float>("NewPrice");
-
-                    b.Property<string>("PromotionText");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookIsbn")
-                        .IsUnique();
-
-                    b.ToTable("PriceOffer");
-                });
-
             modelBuilder.Entity("EFModels.Models.Review", b =>
                 {
                     b.Property<int>("Id")
@@ -108,6 +94,17 @@ namespace EFModels.Migrations
                     b.ToTable("Review");
                 });
 
+            modelBuilder.Entity("EFModels.Models.PriceOffer", b =>
+                {
+                    b.HasBaseType("EFModels.Models.Book");
+
+                    b.Property<float>("NewPrice");
+
+                    b.Property<string>("PromotionText");
+
+                    b.HasDiscriminator().HasValue("PriceOffer");
+                });
+
             modelBuilder.Entity("EFModels.Models.BookAuthors", b =>
                 {
                     b.HasOne("EFModels.Models.Book", "Book")
@@ -118,14 +115,6 @@ namespace EFModels.Migrations
                     b.HasOne("EFModels.Models.Author", "Author")
                         .WithMany("BookAuthors")
                         .HasForeignKey("AuthorFirstName", "AuthorLastName");
-                });
-
-            modelBuilder.Entity("EFModels.Models.PriceOffer", b =>
-                {
-                    b.HasOne("EFModels.Models.Book", "Book")
-                        .WithOne("PriceOffer")
-                        .HasForeignKey("EFModels.Models.PriceOffer", "BookIsbn")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("EFModels.Models.Review", b =>

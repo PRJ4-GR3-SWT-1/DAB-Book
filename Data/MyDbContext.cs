@@ -23,17 +23,17 @@ namespace EFModels.Data
 
             // Book
             modelBuilder.Entity<Book>().HasKey(b => b.Isbn );
-            modelBuilder.Entity<Book>() // One to one
-                .HasOne<PriceOffer>(b => b.PriceOffer)
-                .WithOne(po => po.Book)
-                .HasForeignKey<PriceOffer>(po => po.BookIsbn);
             modelBuilder.Entity<Book>() // One to many
                 .HasMany<Review>(b => b.Reviews)
                 .WithOne(r => r.Book)
                 .HasForeignKey(r => r.BookIsbn);
+            modelBuilder.Entity<Book>()
+                .HasDiscriminator<string>("type")
+                .HasValue<Book>("book")
+                .HasValue<PriceOffer>("PriceOffer");
+
 
             // PriceOffer
-
             // Reivew
 
             // BookAuthors (many to many)
@@ -45,6 +45,7 @@ namespace EFModels.Data
                 .HasOne(ba => ba.Author)
                 .WithMany(a => a.BookAuthors)
                 .HasForeignKey(ba => new { ba.AuthorFirstName, ba.AuthorLastName});
+
         }
 
     }

@@ -30,7 +30,10 @@ namespace EFModels.Migrations
                     ImageUrl = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    PublishedOn = table.Column<DateTime>(nullable: false)
+                    PublishedOn = table.Column<DateTime>(nullable: false),
+                    type = table.Column<string>(nullable: false),
+                    NewPrice = table.Column<float>(nullable: true),
+                    PromotionText = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -62,27 +65,6 @@ namespace EFModels.Migrations
                         principalTable: "Author",
                         principalColumns: new[] { "FirstName", "LastName" },
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PriceOffer",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    NewPrice = table.Column<float>(nullable: false),
-                    PromotionText = table.Column<string>(nullable: true),
-                    BookIsbn = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PriceOffer", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PriceOffer_Book_BookIsbn",
-                        column: x => x.BookIsbn,
-                        principalTable: "Book",
-                        principalColumn: "Isbn",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -118,12 +100,6 @@ namespace EFModels.Migrations
                 columns: new[] { "AuthorFirstName", "AuthorLastName" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PriceOffer_BookIsbn",
-                table: "PriceOffer",
-                column: "BookIsbn",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Review_BookIsbn",
                 table: "Review",
                 column: "BookIsbn");
@@ -133,9 +109,6 @@ namespace EFModels.Migrations
         {
             migrationBuilder.DropTable(
                 name: "BookAuthors");
-
-            migrationBuilder.DropTable(
-                name: "PriceOffer");
 
             migrationBuilder.DropTable(
                 name: "Review");
