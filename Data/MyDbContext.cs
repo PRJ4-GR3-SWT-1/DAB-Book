@@ -21,7 +21,7 @@ namespace EFModels.Data
             modelBuilder.Entity<Author>().HasKey(a => new { a.FirstName, a.LastName });
 
             // Book
-            modelBuilder.Entity<Book>().HasKey(b => b.Isbn );
+            modelBuilder.Entity<Book>().HasKey(b => b.Isbn10 );
             modelBuilder.Entity<Book>() // One to many
                 .HasMany<Review>(b => b.Reviews)
                 .WithOne(r => r.Book)
