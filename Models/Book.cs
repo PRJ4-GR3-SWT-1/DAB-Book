@@ -5,6 +5,8 @@ namespace EFModels.Models
 {
     public class Book
     {
+        
+        public string ISBN13 { get; set; }
         public int Isbn10 { get; set; }
         public float price { get; set; }
         public string ImageUrl { get; set; }
