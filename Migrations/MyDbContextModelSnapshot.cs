@@ -18,11 +18,14 @@ namespace EFModels.Migrations
 
             modelBuilder.Entity("EFModels.Models.Author", b =>
                 {
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ImageUrl");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("FirstName", "LastName");
 
@@ -32,20 +35,27 @@ namespace EFModels.Migrations
             modelBuilder.Entity("EFModels.Models.Book", b =>
                 {
                     b.Property<int>("Isbn")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("PublishedOn");
+                    b.Property<DateTime>("PublishedOn")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("price");
+                    b.Property<float>("price")
+                        .HasColumnType("real");
 
                     b.Property<string>("type")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Isbn");
 
@@ -57,13 +67,17 @@ namespace EFModels.Migrations
             modelBuilder.Entity("EFModels.Models.BookAuthors", b =>
                 {
                     b.Property<int>("BookAuthorsId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("AuthorFirstName");
+                    b.Property<string>("AuthorFirstName")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AuthorLastName");
+                    b.Property<string>("AuthorLastName")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("BookIsbn");
+                    b.Property<int>("BookIsbn")
+                        .HasColumnType("int");
 
                     b.HasKey("BookAuthorsId");
 
@@ -77,15 +91,20 @@ namespace EFModels.Migrations
             modelBuilder.Entity("EFModels.Models.Review", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<int>("BookIsbn");
+                    b.Property<int>("BookIsbn")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Comment");
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NumStars");
+                    b.Property<int>("NumStars")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Votername");
+                    b.Property<string>("Votername")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -98,9 +117,11 @@ namespace EFModels.Migrations
                 {
                     b.HasBaseType("EFModels.Models.Book");
 
-                    b.Property<float>("NewPrice");
+                    b.Property<float>("NewPrice")
+                        .HasColumnType("real");
 
-                    b.Property<string>("PromotionText");
+                    b.Property<string>("PromotionText")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("PriceOffer");
                 });
@@ -115,6 +136,10 @@ namespace EFModels.Migrations
                     b.HasOne("EFModels.Models.Author", "Author")
                         .WithMany("BookAuthors")
                         .HasForeignKey("AuthorFirstName", "AuthorLastName");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("EFModels.Models.Review", b =>
@@ -123,6 +148,20 @@ namespace EFModels.Migrations
                         .WithMany("Reviews")
                         .HasForeignKey("BookIsbn")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("EFModels.Models.Author", b =>
+                {
+                    b.Navigation("BookAuthors");
+                });
+
+            modelBuilder.Entity("EFModels.Models.Book", b =>
+                {
+                    b.Navigation("BookAuthors");
+
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }
