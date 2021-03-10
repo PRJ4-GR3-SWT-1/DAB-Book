@@ -9,6 +9,8 @@ namespace EFModels.Models
         public string LastName { get; set; }
         public string ImageUrl { get; set; }
 
+        public DateTime Dob { get; set; }
+
         public List<BookAuthors> BookAuthors { get; set; }
     }
 }
