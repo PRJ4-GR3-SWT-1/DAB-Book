@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFModels.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20210310103157_AuthorDob")]
-    partial class AuthorDob
+    [Migration("20210310105121_Intial")]
+    partial class Intial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
